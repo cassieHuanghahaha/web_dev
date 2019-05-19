@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+<div class = "row">
+    <div class = "col-md-6 offset-md-3">
+        
+        <div class = "text-center">
+           {% if user.profile_image %}
+           <img width="150px" height="150px" src="{{ user.profile_image }}" class="img-thumbnail rounded-circle">
+           {% else %}
+           <img width="150px" height="150px" scr="{{ url_for('static', filename = 'img/user.png') }}" class="img-thumbnail rounded-circle">
+           {% endif %}
+    
+        <h3>
+            Edit Profile
+        </h3>
+        </div>
+        {% if error %}
+        <div class = "alert alert-danger" role = "alert">
+            {{ error }}
+        </div>
+        {% endif %}
+        {% if message %}
+        <div class = "alert alert-success" role = "alert">
+            {{ message }}
+        </div>
+        {% endif %}
+        
+        {% from "_formhelpers.html" import render_field %}
+        <form method = "POST" action = "{{ url_for('user_page.edit') }}" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            {{ render_field(form.name, class = "form-control") }}
+            {{ render_field(form.email, class = "form-control") }}
+            {{ render_field(form.image, class = "form-control") }}
+            {{ render_field(form.bio, rows = "3", class = "form-control") }}
+            <button type="submit" class = "btn btn-success">
+                Save
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
